@@ -28,7 +28,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Mount routers
-app.use('/api/v1/bootcamps', tours);
+app.use('/api/v1/tours', tours);
 
 
 
