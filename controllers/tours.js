@@ -80,5 +80,49 @@ exports.aliasTopTours = (req, res, next) => {
     req.query.sort = '-ratingsAverage,price';
     req.query.select = 'name,price,ratingsAverage,summary,difficulty';
     next();
-  };
-  
+};
+
+// @desc      Get statistics about tours according to avgRate
+// @route     GET /api/v1/tours/tour-stats
+// @access    public
+exports.getTourStats = asyncHandler(async (req, res, next) => {
+    const stats = await Tour.aggregate([
+        {
+            $match: { ratingsAverage: { $gte:req.query.avgRate*1 } }
+        },
+        {
+            $group: {
+                _id: { $toUpper: '$difficulty' },
+                numTours: { $sum: 1 },    //to increment counter for each tour
+                numRatings: { $sum: '$ratingsQuantity' },
+                avgRating: { $avg: '$ratingsAverage' },
+                avgPrice: { $avg: '$price' },
+                minPrice: { $min: '$price' },
+                maxPrice: { $max: '$price' }
+            }
+        },
+        {
+            $sort: { avgPrice: 1 }  //ascending
+        }
+        // {
+        //   $match: { _id: { $ne: 'EASY' } }
+        // }
+    ]);
+    if (!stats) {
+        return next(
+            new ErrorResponse(`failed to get statistics`, 404)
+        );
+    }
+    else {
+        res.status(200).json({
+            status: 'success',
+            data: {
+                stats
+            }
+        });
+    }
+
+});
+
+
+

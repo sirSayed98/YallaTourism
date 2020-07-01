@@ -7,6 +7,7 @@ const {
     updateTour,
     deleteTour,
     aliasTopTours,
+    getTourStats,
 } = require('../controllers/tours');
 
 const Tour = require('../models/Tour');
@@ -24,6 +25,9 @@ router
       .route('/top-five-tours')
       .get(aliasTopTours,advancedResults(Tour),getTours)
 
+router
+      .route('/tour-stats')
+      .get(getTourStats)      
 router
       .route('/:id')
       .put(updateTour)
