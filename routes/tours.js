@@ -6,6 +6,7 @@ const {
     createTour,
     updateTour,
     deleteTour,
+    aliasTopTours,
 } = require('../controllers/tours');
 
 const Tour = require('../models/Tour');
@@ -19,10 +20,9 @@ router
     .get(advancedResults(Tour), getTours)
     .post(createTour);
 
-
-
-
-//router.route('/:id')
+router
+      .route('/top-five-tours')
+      .get(aliasTopTours,advancedResults(Tour),getTours)
 
 router
       .route('/:id')

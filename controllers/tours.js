@@ -71,3 +71,14 @@ exports.deleteTour = asyncHandler(async (req, res, next) => {
     res.status(200).json({ success: true, data: {} });
 });
 
+
+// @desc      Get top five tours
+// @route     GET /api/v1/tours/top-five-tours
+// @access    public
+exports.aliasTopTours = (req, res, next) => {
+    req.query.limit = '5';
+    req.query.sort = '-ratingsAverage,price';
+    req.query.select = 'name,price,ratingsAverage,summary,difficulty';
+    next();
+  };
+  
