@@ -11,7 +11,8 @@ dotenv.config({ path: './config/.env' });
 // Connect to database
 connectDB();
 
-// Route files
+// load Routers
+const tours = require('./routes/tours');
 
 
 const app = express();
@@ -27,6 +28,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Mount routers
+app.use('/api/v1/bootcamps', tours);
 
 
 

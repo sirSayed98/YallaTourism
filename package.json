@@ -19,7 +19,9 @@
         "express-validator": "^6.5.0",
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^5.9.19",
-        "morgan": "^1.10.0"
+        "morgan": "^1.10.0",
+        "slugify": "^1.4.4",
+        "validator": "^13.1.1"
     },
     "devDependencies": {
         "concurrently": "^5.2.0",
