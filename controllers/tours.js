@@ -88,7 +88,7 @@ exports.aliasTopTours = (req, res, next) => {
 exports.getTourStats = asyncHandler(async (req, res, next) => {
     const stats = await Tour.aggregate([
         {
-            $match: { ratingsAverage: { $gte:req.query.avgRate*1 } }
+            $match: { ratingsAverage: { $gte: req.query.avgRate * 1 } }
         },
         {
             $group: {
@@ -115,14 +115,73 @@ exports.getTourStats = asyncHandler(async (req, res, next) => {
     }
     else {
         res.status(200).json({
-            status: 'success',
-            data: {
-                stats
-            }
+            success: true,
+            data: stats
         });
     }
+});
+
+
+// @desc      Get statistics for tours by year
+// @route     GET/api/v1/tours/year/:year
+// @access    Public
+exports.getToursInYear = asyncHandler(async (req, res, next) => {
+    const year = req.params.year * 1; // 2021
+    const plan = await Tour.aggregate([
+        {
+            $unwind: '$startDates'
+        },
+        {
+            $match: {
+                startDates: {
+                    $gte: new Date(`${year}-01-01`),
+                    $lte: new Date(`${year}-12-31`)
+                }
+            }
+        },
+        {
+            $group: {
+                _id: { $month: '$startDates' },
+                numTourStarts: { $sum: 1 },
+                tours: { $push: '$name' }
+            }
+        },
+        {
+            $addFields: { month: '$_id' }
+        },
+        {
+            $project: {
+                _id: 0
+            }
+        },
+        {
+            $sort: { numTourStarts: -1 } //decending
+        },
+        {
+            $limit: 12  //12 month in year
+        }
+    ]);
+    if (!year) {
+        return next(
+            new ErrorResponse(`failed to get tours in year ${year}`, 404)
+        );
+    }
+    res.status(200).json({
+        success: true,
+        data: plan
+
+    });
 
 });
+
+//tmp 
+
+// // @desc      Delete tour
+// // @route     DELETE /api/v1/tours/:id
+// // @access    Private
+// exports.deleteTour = asyncHandler(async (req, res, next) => {
+
+// });
 
 
 

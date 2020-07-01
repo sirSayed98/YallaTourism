@@ -8,6 +8,7 @@ const {
     deleteTour,
     aliasTopTours,
     getTourStats,
+    getToursInYear,
 } = require('../controllers/tours');
 
 const Tour = require('../models/Tour');
@@ -15,24 +16,31 @@ const advancedResults = require('../middleware/advancedResults');
 
 const router = express.Router();
 
-
+/* Basic CRUD*/
 router
     .route('/')
     .get(advancedResults(Tour), getTours)
     .post(createTour);
+router
+    .route('/:id')
+    .put(updateTour)
+    .delete(deleteTour)
+    .get(getTour)      
 
+
+/* Special routes*/    
 router
       .route('/top-five-tours')
       .get(aliasTopTours,advancedResults(Tour),getTours)
 
 router
       .route('/tour-stats')
-      .get(getTourStats)      
+      .get(getTourStats)    
+
 router
-      .route('/:id')
-      .put(updateTour)
-      .delete(deleteTour)
-      .get(getTour)      
+      .route('/year/:year')
+      .get(getToursInYear)      
+
      
 
 
