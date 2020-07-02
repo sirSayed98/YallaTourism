@@ -86,9 +86,12 @@ exports.aliasTopTours = (req, res, next) => {
 // @route     GET /api/v1/tours/tour-stats
 // @access    public
 exports.getTourStats = asyncHandler(async (req, res, next) => {
+    let avgRate = 4; //default value
+    if (req.query.avgRate)
+        avgRate = req.query.avgRate * 1;
     const stats = await Tour.aggregate([
         {
-            $match: { ratingsAverage: { $gte: req.query.avgRate * 1 } }
+            $match: { ratingsAverage: { $gte: avgRate } }
         },
         {
             $group: {
@@ -175,7 +178,6 @@ exports.getToursInYear = asyncHandler(async (req, res, next) => {
 });
 
 //tmp 
-
 // // @desc      Delete tour
 // // @route     DELETE /api/v1/tours/:id
 // // @access    Private

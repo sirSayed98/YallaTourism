@@ -30,6 +30,13 @@ if (process.env.NODE_ENV === 'development') {
 // Mount routers
 app.use('/api/v1/tours', tours);
 
+// Handle 404 requests
+app.all('*', (req,res, next)=>{
+    res.status(404).json({ 
+        success:false,
+        msg:`Cannot find this ${req.originalUrl} on server`
+    })
+});
 
 
 // errorHandler

@@ -16,6 +16,15 @@ const advancedResults = require('../middleware/advancedResults');
 
 const router = express.Router();
 
+/* Special routes*/    
+router
+      .route('/top-five-tours')
+      .get(aliasTopTours,advancedResults(Tour),getTours)
+
+router
+      .route('/tour-stats')
+      .get(getTourStats)    
+
 /* Basic CRUD*/
 router
     .route('/')
@@ -28,14 +37,7 @@ router
     .get(getTour)      
 
 
-/* Special routes*/    
-router
-      .route('/top-five-tours')
-      .get(aliasTopTours,advancedResults(Tour),getTours)
 
-router
-      .route('/tour-stats')
-      .get(getTourStats)    
 
 router
       .route('/year/:year')
