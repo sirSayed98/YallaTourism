@@ -36,3 +36,16 @@ const UserSchema = new mongoose.Schema({
   },
   photo: String,
 });
+
+const User = mongoose.model('User', UserSchema);
+
+
+// Sign JWT and return
+UserSchema.methods.getSignedJwtToken = function() {
+    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRE
+    });
+  };
+  
+
+module.exports = User;
