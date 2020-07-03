@@ -14,6 +14,7 @@ connectDB();
 // load Routers
 const tours = require('./routes/tours');
 const auth = require('./routes/auth');
+const users = require('./routes/user');
 
 
 const app = express();
@@ -31,6 +32,7 @@ if (process.env.NODE_ENV === 'development') {
 // Mount routers
 app.use('/api/v1/tours', tours);
 app.use('/api/v1/auth', auth);
+app.use('/api/v1/users', users);
 
 // Handle 404 requests
 app.all('*', (req,res, next)=>{

@@ -43,8 +43,5 @@ router
       .route('/year/:year')
       .get(getToursInYear)      
 
-     
-
-
-
+    
 module.exports = router;

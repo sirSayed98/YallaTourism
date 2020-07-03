@@ -119,7 +119,6 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
     await user.save();
-
     sendTokenResponse(user, 200, res);
 });
 
@@ -140,16 +139,6 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
 
     sendTokenResponse(user, 200, res);
 });
-
-
-
-
-
-
-
-
-
-
 
 
 // Get token from model, create cookie and send response
