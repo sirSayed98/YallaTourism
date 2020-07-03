@@ -37,7 +37,6 @@ const UserSchema = new mongoose.Schema({
   photo: String,
 });
 
-const User = mongoose.model('User', UserSchema);
 
 
 // Sign JWT and return
@@ -48,4 +47,4 @@ UserSchema.methods.getSignedJwtToken = function() {
   };
   
 
-module.exports = User;
+module.exports = mongoose.model('User', UserSchema);
