@@ -5,7 +5,8 @@ const {
     login,
     forgetPassword,
     resetPassword,
-    updatePassword
+    updatePassword,
+    getMe
 } = require('../controllers/auth');
 
 const User = require('../models/User');
@@ -16,6 +17,9 @@ const router = express.Router();
 router
     .route('/register')
     .post(register)
+router
+    .route('/me')
+    .get(protect,getMe)
 
 router
     .route('/login')
@@ -31,6 +35,6 @@ router
 
 router
     .route('/updatePassword')
-    .put(protect,updatePassword)
+    .put(protect, updatePassword)
 
 module.exports = router;

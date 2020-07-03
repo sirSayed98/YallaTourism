@@ -4,28 +4,35 @@ const {
     updateMe,
     deleteUser,
     getUsers,
-    createUser
+    createUser,
+    updateUser
 } = require('../controllers/user');
 
 const User = require('../models/User');
-const { protect } = require('../middleware/auth');
-
+const { protect, authorize } = require('../middleware/auth');
+const advancedResults = require('../middleware/advancedResults');
 
 const router = express.Router();
 
+router.use(protect); //apply on all routes
+
+router
+    .route('/updateMe')
+    .put(updateMe)
+
+/* Admin CRUD */    
 router
     .route('/')
-    .put(protect, updateMe)
+    .get(authorize('admin'), advancedResults(User), getUsers)
 
 router
     .route('/')
-    .get(protect, getUsers)
-
+    .post(authorize('admin'), createUser)
 router
-    .route('/')
-    .post(protect, createUser)
+    .route('/:id')
+    .delete(authorize('admin'), deleteUser)
 router
-    .route('/')
-    .delete(protect, deleteUser)
+    .route('/:id')
+    .put(authorize('admin'),updateUser)
 
 module.exports = router;    

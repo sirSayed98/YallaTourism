@@ -12,7 +12,7 @@ const filterObj = (obj, ...allowedFields) => {
 
 
 //@desc       Update date
-//@route      Put/api/v1/users
+//@route      Put/api/v1/users/updateMe
 //@access     private
 exports.updateMe = asyncHandler(async (req, res, next) => {
     // 1) Create error if user POSTs password data
@@ -41,14 +41,14 @@ exports.updateMe = asyncHandler(async (req, res, next) => {
 
 })
 // @desc      Get all users
-// @route     GET /api/v1/auth/users
+// @route     GET /api/v1/users
 // @access    Private/Admin
 exports.getUsers = asyncHandler(async (req, res, next) => {
     res.status(200).json(res.advancedResults);
 });
 
 // @desc      Create user
-// @route     POST /api/v1/auth/users
+// @route     POST /api/v1/users
 // @access    Private/Admin
 exports.createUser = asyncHandler(async (req, res, next) => {
     const user = await User.create(req.body);
@@ -60,7 +60,7 @@ exports.createUser = asyncHandler(async (req, res, next) => {
 });
 
 // @desc      Delete user
-// @route     DELETE /api/v1/auth/users/:id
+// @route     DELETE /api/v1/users/:id
 // @access    Private/Admin
 exports.deleteUser = asyncHandler(async (req, res, next) => {
     await User.findByIdAndDelete(req.params.id);
@@ -70,3 +70,17 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
         data: {}
     });
 });
+// @desc      Update user
+// @route     PUT /api/v1/users/:id
+// @access    Private/Admin
+exports.updateUser = asyncHandler(async (req, res, next) => {
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
+  
+    res.status(200).json({
+      success: true,
+      data: user
+    });
+  });
