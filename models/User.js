@@ -77,7 +77,7 @@ UserSchema.methods.getResetPasswordToken = function () {
     return resetToken;
 };
 // prevent use old token after changing password 
-userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+UserSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
     if (this.passwordChangedAt) {
         const changedTimestamp = parseInt(
             this.passwordChangedAt.getTime() / 1000,
@@ -88,7 +88,7 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
     // False means NOT changed
     return false;
 };
-userSchema.pre('save', function (next) {
+UserSchema.pre('save', function (next) {
     if (!this.isModified('password') || this.isNew) return next();
     this.passwordChangedAt = Date.now() - 1000;
     next();

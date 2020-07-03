@@ -22,8 +22,12 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
    // Verify token
    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+   const currentUser=await User.findById(decoded.id);
 
-  // 4) Check if user changed password after the token was issued
+   if (!currentUser) {
+    return next(new ErrorResponse('The user belonging to this token does no longer exist.', 401))
+  }
+  //  Check if user changed password after the token was issued
   if (currentUser.changedPasswordAfter(decoded.iat)) {
     return next(
       new AppError('User recently changed password! Please log in again.', 401)
