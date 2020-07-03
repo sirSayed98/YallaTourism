@@ -20,20 +20,21 @@ exports.protect = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('Not authorized to access this route', 401));
   }
 
-  try {
-    // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+   // Verify token
+   const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    req.user = await User.findById(decoded.id);
-
-    next();
-  } catch (err) {
-    return next(new ErrorResponse('Not authorized to access this route', 401));
+  // 4) Check if user changed password after the token was issued
+  if (currentUser.changedPasswordAfter(decoded.iat)) {
+    return next(
+      new AppError('User recently changed password! Please log in again.', 401)
+    );
   }
+  req.user = await User.findById(decoded.id);
+  next();
 });
 
 // Grant access to specific roles
-exports.authorize = (...roles) => {
+exports.authorize= (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return next(

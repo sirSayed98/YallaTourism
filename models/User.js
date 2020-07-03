@@ -72,10 +72,28 @@ UserSchema.methods.getResetPasswordToken = function () {
         .digest('hex');
 
     // Set expire
-    this.resetPasswordExpire = Date.now() + 10*60*1000; // 10 minutes for expire token
-   
+    this.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 minutes for expire token
+
     return resetToken;
 };
+// prevent use old token after changing password 
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+    if (this.passwordChangedAt) {
+        const changedTimestamp = parseInt(
+            this.passwordChangedAt.getTime() / 1000,
+            10
+        );
+        return JWTTimestamp < changedTimestamp;
+    }
+    // False means NOT changed
+    return false;
+};
+userSchema.pre('save', function (next) {
+    if (!this.isModified('password') || this.isNew) return next();
+    this.passwordChangedAt = Date.now() - 1000;
+    next();
+});
+
 
 
 module.exports = mongoose.model('User', UserSchema);
