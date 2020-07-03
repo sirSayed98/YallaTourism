@@ -1,18 +1,19 @@
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const User = require('../models/User');
+const sendEmail = require('../utils/sendEmail');
 
 
 //@desc       Register User
 //@route      GET/api/v1/auth/register
 //@access     public
 exports.register = asyncHandler(async (req, res, next) => {
-    const { password,confirmPassword } = req.body;
+    const { password, confirmPassword } = req.body;
 
-    if(password!==confirmPassword)
-    return next(
-        new ErrorResponse(`password and confirm password don't match`, 400)
-    );
+    if (password !== confirmPassword)
+        return next(
+            new ErrorResponse(`password and confirm password don't match`, 400)
+        );
     //create user
     const user = await User.create(req.body);
     sendTokenResponse(user, 200, res);
@@ -47,6 +48,53 @@ exports.login = asyncHandler(async (req, res, next) => {
 });
 
 
+// @desc      Forgot password
+// @route     POST /api/v1/auth/forgotPassword
+// @access    Public
+exports.forgetPassword = asyncHandler(async (req, res, next) => {
+    const user = await User.findOne({ email: req.body.email });
+
+    if (!user) {
+        return next(new ErrorResponse('There is no user with that email', 404));
+    }
+
+    // Get reset token
+    const resetToken = user.getResetPasswordToken();
+
+    // save hashed token and expire date
+    await user.save({validateBeforeSave: false }); //to stop run validation which will ask to enter required fields
+
+    // Create reset url
+    const resetUrl = `${req.protocol}://${req.get(
+        'host'
+    )}/api/v1/auth/resetPassword/${resetToken}`;
+
+    const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
+
+    try {
+        await sendEmail({
+            email: user.email,
+            subject: 'Password reset token',
+            message
+        });
+
+        res.status(200).json({ success: true, data: 'Email sent' });
+    } catch (err) {
+        console.log(err);
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+
+        await user.save({validateBeforeSave: false });
+
+        return next(new ErrorResponse('Email could not be sent', 500));
+    }
+
+    res.status(200).json({
+        success: true,
+        data: user
+    });
+});
+
 
 
 
@@ -66,7 +114,7 @@ const sendTokenResponse = (user, statusCode, res) => {
 
     const options = {
         expires: new Date(
-            Date.now() + process.env.JWT_COOKIE_EXPIRE 
+            Date.now() + process.env.JWT_COOKIE_EXPIRE
         ),
         httpOnly: true
     };

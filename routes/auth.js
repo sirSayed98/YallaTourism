@@ -2,7 +2,8 @@ const express = require('express');
 
 const {
     register,
-    login
+    login,
+    forgetPassword
 } = require('../controllers/auth');
 
 const User = require('../models/User');
@@ -16,6 +17,10 @@ router
 router
     .route('/login')
     .post(login)
+
+router
+    .route('/forgetPassword')
+    .post(forgetPassword)
 
 
 
