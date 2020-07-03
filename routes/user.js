@@ -2,7 +2,8 @@ const express = require('express');
 
 const {
     updateMe,
-    deleteUser
+    deleteUser,
+    getUsers
 } = require('../controllers/user');
 
 const User = require('../models/User');
@@ -16,5 +17,9 @@ router
     .put(protect, updateMe)
 router
     .route('/')
+    .get(protect, getUsers)
+router
+    .route('/')
     .delete(protect, deleteUser)
+
 module.exports = router;    

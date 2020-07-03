@@ -40,7 +40,13 @@ exports.updateMe = asyncHandler(async (req, res, next) => {
     });
 
 })
-
+// @desc      Get all users
+// @route     GET /api/v1/auth/users
+// @access    Private/Admin
+exports.getUsers = asyncHandler(async (req, res, next) => {
+    res.status(200).json(res.advancedResults);
+  });
+  
 // @desc      Delete user
 // @route     DELETE /api/v1/auth/users/:id
 // @access    Private/Admin
@@ -51,4 +57,4 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
       success: true,
       data: {}
     });
-  });
+});
