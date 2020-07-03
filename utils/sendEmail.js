@@ -9,7 +9,7 @@ const sendEmail = async options => {
       pass: process.env.SMTP_PASSWORD
     }
   });
-console.log(transporter)
+
   const message = {
     from: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
     to: options.email,
