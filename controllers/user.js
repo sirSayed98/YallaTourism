@@ -13,7 +13,7 @@ const filterObj = (obj, ...allowedFields) => {
 
 //@desc       Update date
 //@route      Put/api/v1/users/updateMe
-//@access     private
+//@access     Private/all
 exports.updateMe = asyncHandler(async (req, res, next) => {
     // 1) Create error if user POSTs password data
 

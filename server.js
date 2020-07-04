@@ -5,6 +5,9 @@ const cookieParser = require('cookie-parser');
 const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
 
+//Security
+const reateLimit=require('express-rate-limit')
+
 // Load env vars
 dotenv.config({ path: './config/.env' });
 
@@ -15,6 +18,7 @@ connectDB();
 const tours = require('./routes/tours');
 const auth = require('./routes/auth');
 const users = require('./routes/user');
+const rateLimit = require('express-rate-limit');
 
 
 const app = express();
@@ -28,6 +32,13 @@ app.use(cookieParser());
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
+// Global Middleware
+const Limitter=rateLimit({
+    max:100,
+    window:60*60*1000,
+    message:"Too many requests with same IP please try again after one hour"
+});
+app.use('/api',Limitter);
 
 // Mount routers
 app.use('/api/v1/tours', tours);
@@ -35,10 +46,10 @@ app.use('/api/v1/auth', auth);
 app.use('/api/v1/users', users);
 
 // Handle 404 requests
-app.all('*', (req,res, next)=>{
-    res.status(404).json({ 
-        success:false,
-        msg:`Cannot find this ${req.originalUrl} on server`
+app.all('*', (req, res, next) => {
+    res.status(404).json({
+        success: false,
+        msg: `Cannot find this ${req.originalUrl} on server`
     })
 });
 
