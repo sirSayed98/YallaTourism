@@ -25,6 +25,8 @@ const users = require('./routes/user');
 
 
 const app = express();
+// Global Middleware
+
 // Body parser
 app.use(express.json({limit:'10kb'}));
 
@@ -35,7 +37,6 @@ app.use(cookieParser());
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
-// Global Middleware
 
 // Sanitize data
 app.use(mongoSanitize());
@@ -46,8 +47,19 @@ app.use(helmet());
 // Prevent XSS attacks
 app.use(xss());
 
-// Prevent http param pollution
-app.use(hpp());
+// Prevent parameter pollution
+app.use(
+    hpp({
+      whitelist: [
+        'duration',
+        'ratingsQuantity',
+        'ratingsAverage',
+        'maxGroupSize',
+        'difficulty',
+        'price'
+      ]
+    })
+  );  
 
 // Enable CORS
 app.use(cors());
@@ -58,6 +70,7 @@ const Limitter=rateLimit({
     message:"Too many requests with same IP please try again after one hour"
 });
 app.use('/api',Limitter);
+
 
 
 // Mount routers

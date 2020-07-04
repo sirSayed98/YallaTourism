@@ -8,8 +8,10 @@ const crypto =require('crypto')
 //@route      GET/api/v1/auth/register
 //@access     public
 exports.register = asyncHandler(async (req, res, next) => {
-    const { password, confirmPassword } = req.body;
+    const { password, confirmPassword,role } = req.body;
 
+    if(role==='admin')
+    return next(new ErrorResponse('Register as admin is not allowed'),400)
     if (password !== confirmPassword)
         return next(
             new ErrorResponse(`password and confirm password don't match`, 400)
