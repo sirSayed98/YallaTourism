@@ -6,8 +6,12 @@ const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
 
 //Security
-const reateLimit=require('express-rate-limit')
-
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
+const cors = require('cors');
 // Load env vars
 dotenv.config({ path: './config/.env' });
 
@@ -18,12 +22,11 @@ connectDB();
 const tours = require('./routes/tours');
 const auth = require('./routes/auth');
 const users = require('./routes/user');
-const rateLimit = require('express-rate-limit');
 
 
 const app = express();
 // Body parser
-app.use(express.json());
+app.use(express.json({limit:'10kb'}));
 
 // Cookie parser
 app.use(cookieParser());
@@ -33,12 +36,29 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 // Global Middleware
+
+// Sanitize data
+app.use(mongoSanitize());
+
+// Set security headers
+app.use(helmet());
+
+// Prevent XSS attacks
+app.use(xss());
+
+// Prevent http param pollution
+app.use(hpp());
+
+// Enable CORS
+app.use(cors());
+
 const Limitter=rateLimit({
     max:100,
-    window:60*60*1000,
+    window:60*60*1000,   //100 request per hour
     message:"Too many requests with same IP please try again after one hour"
 });
 app.use('/api',Limitter);
+
 
 // Mount routers
 app.use('/api/v1/tours', tours);
