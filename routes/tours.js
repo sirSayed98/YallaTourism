@@ -28,13 +28,19 @@ router
 /* Basic CRUD*/
 router
     .route('/')
-    .get(advancedResults(Tour), getTours)
+    .get(advancedResults(Tour, {
+        path: 'guides',
+        select: '-__v -passwordChangedAt'
+    }), getTours)
     .post(createTour);
 router
     .route('/:id')
+    .get(advancedResults(Tour, {
+        path: 'guides',
+        select: '-__v -passwordChangedAt'
+    }),getTour)      
     .put(updateTour)
     .delete(deleteTour)
-    .get(getTour)      
 
 
 

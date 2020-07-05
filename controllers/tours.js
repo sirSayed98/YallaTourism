@@ -21,7 +21,7 @@ exports.getTour = asyncHandler(async (req, res, next) => {
         );
     }
 
-    res.status(200).json({ success: true, data: tour });
+    res.status(200).json(res.advancedResults);
 });
 
 // @desc      Create new Tour
