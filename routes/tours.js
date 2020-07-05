@@ -35,10 +35,7 @@ router
     .post(createTour);
 router
     .route('/:id')
-    .get(advancedResults(Tour, {
-        path: 'guides',
-        select: '-__v -passwordChangedAt'
-    }),getTour)      
+    .get(getTour)      
     .put(updateTour)
     .delete(deleteTour)
 

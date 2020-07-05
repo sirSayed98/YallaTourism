@@ -13,15 +13,20 @@ exports.getTours = asyncHandler(async (req, res, next) => {
 // @route     GET /api/v1/tours/:id
 // @access    Public
 exports.getTour = asyncHandler(async (req, res, next) => {
-    const tour = await Tour.findById(req.params.id);
+    const tour = await Tour.findById(req.params.id).populate('reviews').populate(
+        {
+            path: 'guides',
+            select: '-__v -passwordChangedAt'
+        }
+    );
 
-    if (!tour) {
-        return next(
-            new ErrorResponse(`Tour not found with id of ${req.params.id}`, 404)
-        );
-    }
+if (!tour) {
+    return next(
+        new ErrorResponse(`Tour not found with id of ${req.params.id}`, 404)
+    );
+}
 
-    res.status(200).json(res.advancedResults);
+res.status(200).json({ success: true, data: tour });
 });
 
 // @desc      Create new Tour
