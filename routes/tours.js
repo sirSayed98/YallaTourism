@@ -13,8 +13,12 @@ const {
 
 const Tour = require('../models/Tour');
 const advancedResults = require('../middleware/advancedResults');
-
+const reviewRouter=require('./reviews')
 const router = express.Router();
+
+/* Review Routers */
+
+router.use('/:tourID/reviews',reviewRouter);
 
 /* Special routes*/    
 router

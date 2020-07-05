@@ -13,14 +13,10 @@ exports.getReviews = asyncHandler(async (req, res, next) => {
 // @route     POST /api/v1/reviews
 // @access    Private
 exports.createReview = asyncHandler(async (req, res, next) => {
-    console.log(req.user._id)
-    const { rating, review, tour } = req.body;
-    const review_obj = await Review.create({
-        user: req.user._id,
-        rating,
-        tour,
-        review,
-    });
+    if (!req.body.tour) req.body.tour = req.params.tourID;
+    if (!req.body.user) req.body.user = req.user.id;
+    
+    const review_obj = await Review.create(req.body);
     res.status(201).json({
         success: true,
         data: review_obj

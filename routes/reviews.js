@@ -1,14 +1,14 @@
 const express = require('express');
 
 const {
-   getReviews,
-   createReview
+    getReviews,
+    createReview
 } = require('../controllers/reviews');
 
 const Review = require('../models/Review');
 const advancedResults = require('../middleware/advancedResults');
 const { protect, authorize } = require('../middleware/auth');
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 
 /* Basic CRUD*/
@@ -17,8 +17,8 @@ router
     .get(advancedResults(Review, {
         path: 'user',
         select: '-__v -passwordChangedAt -createdAt'
-    }),getReviews)
-    .post(protect,authorize('user'),createReview);
+    }), getReviews)
+    .post(protect, authorize('user'), createReview);
 
-    
+
 module.exports = router;

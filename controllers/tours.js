@@ -20,13 +20,13 @@ exports.getTour = asyncHandler(async (req, res, next) => {
         }
     );
 
-if (!tour) {
-    return next(
-        new ErrorResponse(`Tour not found with id of ${req.params.id}`, 404)
-    );
-}
+    if (!tour) {
+        return next(
+            new ErrorResponse(`Tour not found with id of ${req.params.id}`, 404)
+        );
+    }
 
-res.status(200).json({ success: true, data: tour });
+    res.status(200).json({ success: true, data: tour });
 });
 
 // @desc      Create new Tour
