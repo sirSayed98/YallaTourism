@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
-const User = require('./User');
+// const User = require('./User');
 // const validator = require('validator');
 
 const tourSchema = new mongoose.Schema(
@@ -48,7 +48,7 @@ const tourSchema = new mongoose.Schema(
     priceDiscount: {
       type: Number,
       validate: {
-        validator: function(val) {
+        validator: function (val) {
           // this only points to current doc on NEW document creation
           return val < this.price;
         },
@@ -103,7 +103,12 @@ const tourSchema = new mongoose.Schema(
         day: Number
       }
     ],
-    guides:Array
+    guides: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
+      }
+    ]
   },
   {
     toJSON: { virtuals: true },
@@ -111,25 +116,26 @@ const tourSchema = new mongoose.Schema(
   }
 );
 
-tourSchema.virtual('durationWeeks').get(function() {
+tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
-
+/*
 //Modelling Tour Guides Embedding
-tourSchema.pre('save', async function(next) {
+tourSchema.pre('save', async function (next) {
   const guidesPromises = this.guides.map(async id => await User.findById(id));
   this.guides = await Promise.all(guidesPromises);
   next();
 });
+*/
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
-tourSchema.pre('save', function(next) {
+tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
 
 // avoid get secret tours
-tourSchema.pre(/^find/, function(next) {
+tourSchema.pre(/^find/, function (next) {
   this.find({ secretTour: { $ne: true } });
   this.start = Date.now();
   next();
@@ -138,9 +144,9 @@ tourSchema.pre(/^find/, function(next) {
 
 
 // AGGREGATION MIDDLEWARE
-tourSchema.pre('aggregate', function(next) {
+tourSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
-    //prevent calculate secret tours in aggregation functions
+  //prevent calculate secret tours in aggregation functions
   next();
 });
 
