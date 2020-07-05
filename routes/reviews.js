@@ -14,7 +14,10 @@ const router = express.Router();
 /* Basic CRUD*/
 router
     .route('/')
-    .get(advancedResults(Review),getReviews)
+    .get(advancedResults(Review, {
+        path: 'user',
+        select: '-__v -passwordChangedAt -createdAt'
+    }),getReviews)
     .post(protect,authorize('user'),createReview);
 
     
