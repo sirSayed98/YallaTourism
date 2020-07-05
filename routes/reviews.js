@@ -14,10 +14,7 @@ const router = express.Router({ mergeParams: true });
 /* Basic CRUD*/
 router
     .route('/')
-    .get(advancedResults(Review, {
-        path: 'user',
-        select: '-__v -passwordChangedAt -createdAt'
-    }), getReviews)
+    .get(getReviews)
     .post(protect, authorize('user'), createReview);
 
 

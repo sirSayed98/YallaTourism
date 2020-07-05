@@ -6,7 +6,13 @@ const Review = require('../models/Review')
 // @route     GET /api/v1/reviews
 // @access    Public
 exports.getReviews = asyncHandler(async (req, res, next) => {
-    res.status(200).json(res.advancedResults);
+    let filter={}
+    if (req.params.tourID) filter={tour:req.params.tourID}
+    const reviews= await Review.find(filter).populate({
+        path: 'user',
+        select: '-__v -passwordChangedAt -createdAt'
+    });
+    res.status(200).json({ success: true,count:reviews.length ,data:reviews})
 });
 
 // @desc      Create new Review
