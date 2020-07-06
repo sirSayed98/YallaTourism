@@ -5,8 +5,7 @@ const {
     createReview
 } = require('../controllers/reviews');
 
-const Review = require('../models/Review');
-const advancedResults = require('../middleware/advancedResults');
+
 const { protect, authorize } = require('../middleware/auth');
 const router = express.Router({ mergeParams: true });
 

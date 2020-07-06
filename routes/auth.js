@@ -9,7 +9,7 @@ const {
     getMe
 } = require('../controllers/auth');
 
-const User = require('../models/User');
+
 const { protect } = require('../middleware/auth');
 
 const router = express.Router();

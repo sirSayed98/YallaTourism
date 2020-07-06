@@ -20,19 +20,21 @@ router
     .route('/updateMe')
     .put(updateMe)
 
-/* Admin CRUD */    
+router.use(authorize('admin'))
+
+/* Admin CRUD */
 router
     .route('/')
-    .get(authorize('admin'), advancedResults(User), getUsers)
+    .get(advancedResults(User), getUsers)
 
 router
     .route('/')
-    .post(authorize('admin'), createUser)
+    .post(createUser)
 router
     .route('/:id')
-    .delete(authorize('admin'), deleteUser)
+    .delete(deleteUser)
 router
     .route('/:id')
-    .put(authorize('admin'),updateUser)
+    .put(updateUser)
 
 module.exports = router;    

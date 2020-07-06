@@ -15,6 +15,7 @@ const Tour = require('../models/Tour');
 const advancedResults = require('../middleware/advancedResults');
 const reviewRouter=require('./reviews')
 const router = express.Router();
+const { protect, authorize } = require('../middleware/auth');
 
 /* Review Routers */
 
@@ -36,19 +37,19 @@ router
         path: 'guides',
         select: '-__v -passwordChangedAt'
     }), getTours)
-    .post(createTour);
+    .post(protect,authorize('admin','lead-guide'),createTour);
 router
     .route('/:id')
     .get(getTour)      
-    .put(updateTour)
-    .delete(deleteTour)
+    .put(protect,authorize('admin','lead-guide'),updateTour)
+    .delete(protect,authorize('admin','lead-guide'),deleteTour)
 
 
 
 
 router
       .route('/year/:year')
-      .get(getToursInYear)      
+      .get(protect,authorize('admin','lead-guide','guide'),getToursInYear)      
 
     
 module.exports = router;
