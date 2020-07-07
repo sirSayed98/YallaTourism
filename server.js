@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
@@ -26,10 +27,14 @@ const reviews = require('./routes/reviews');
 
 
 const app = express();
+// setting up view engine
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+
 // Global Middleware
 
 // Body parser
-app.use(express.json({limit:'10kb'}));
+app.use(express.json({ limit: '10kb' }));
 
 // Cookie parser
 app.use(cookieParser());
@@ -51,28 +56,31 @@ app.use(xss());
 // Prevent parameter pollution
 app.use(
     hpp({
-      whitelist: [
-        'duration',
-        'ratingsQuantity',
-        'ratingsAverage',
-        'maxGroupSize',
-        'difficulty',
-        'price'
-      ]
+        whitelist: [
+            'duration',
+            'ratingsQuantity',
+            'ratingsAverage',
+            'maxGroupSize',
+            'difficulty',
+            'price'
+        ]
     })
-  );  
+);
 
 // Enable CORS
 app.use(cors());
 
-const Limitter=rateLimit({
-    max:100,
-    window:60*60*1000,   //100 request per hour
-    message:"Too many requests with same IP please try again after one hour"
+const Limitter = rateLimit({
+    max: 100,
+    window: 60 * 60 * 1000,   //100 request per hour
+    message: "Too many requests with same IP please try again after one hour"
 });
-app.use('/api',Limitter);
+app.use('/api', Limitter);
 
-
+// view routers
+app.get('/', (req, res) => {
+    res.status(200).render('base');
+})
 
 // Mount routers
 app.use('/api/v1/tours', tours);
