@@ -24,7 +24,7 @@ const tours = require('./routes/tours');
 const auth = require('./routes/auth');
 const users = require('./routes/user');
 const reviews = require('./routes/reviews');
-
+const viewRouter = require('./routes/viewsRoutes');
 
 const app = express();
 // setting up view engine
@@ -80,14 +80,10 @@ const Limitter = rateLimit({
 });
 app.use('/api', Limitter);
 
-// view routers
-app.get('/', (req, res) => {
-    res.status(200).render('base',{
-        user:'mohamed'
-    });
-})
+
 
 // Mount routers
+app.use('/', viewRouter);
 app.use('/api/v1/tours', tours);
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/users', users);

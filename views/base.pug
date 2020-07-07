@@ -6,16 +6,17 @@ html
       link(rel='stylesheet' href='/css/style.css')
       link(rel='shortcut icon' type='image/png' href='/img/favicon.png')
       link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato:300,300i,700')
-      title YallaTourism
+      title YallaTourism | #{title}
   
   body
-    // HEADER
+    //HEADER
     include _header
         
-    // CONTENT
-    h1 This is a placeholder heading
+    //CONTENT
+    block content
+      h1 This is a placeholder heading
       
-    // FOOTER
+    //FOOTER
     include _footer
     
   
