@@ -30,6 +30,9 @@ const app = express();
 // setting up view engine
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
+//serving static folders
+app.use(express.static(path.join(__dirname,'Public')))
+
 
 // Global Middleware
 
@@ -79,7 +82,9 @@ app.use('/api', Limitter);
 
 // view routers
 app.get('/', (req, res) => {
-    res.status(200).render('base');
+    res.status(200).render('base',{
+        user:'mohamed'
+    });
 })
 
 // Mount routers
