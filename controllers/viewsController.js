@@ -40,3 +40,13 @@ exports.getTour = asyncHandler(async (req, res, next) => {
         reviews
     });
 });
+
+
+//@desc       Login Page
+//@route      /login
+//@access     Public
+exports.getLoginForm = asyncHandler(async (req, res, next) => {
+    res.status(200).render('login', {
+        title: `Login into Your Account`
+    });
+});
