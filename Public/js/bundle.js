@@ -8424,29 +8424,28 @@ function () {
 
           case 3:
             res = _context.sent;
-            console.log(res);
 
-            if (res.data.status === true) {
+            if (res.data.success === true) {
               (0, _alerts.showAlert)('success', 'Logged in successfully!');
               window.setTimeout(function () {
                 location.assign('/');
-              }, 1500);
+              }, 1000);
             }
 
-            _context.next = 11;
+            _context.next = 10;
             break;
 
-          case 8:
-            _context.prev = 8;
+          case 7:
+            _context.prev = 7;
             _context.t0 = _context["catch"](0);
-            (0, _alerts.showAlert)('error', _context.t0.response.data);
+            (0, _alerts.showAlert)('error', "Invalid credentials");
 
-          case 11:
+          case 10:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 8]]);
+    }, _callee, null, [[0, 7]]);
   }));
 
   return function login(_x, _x2) {
@@ -8471,19 +8470,24 @@ function () {
             _context2.next = 3;
             return (0, _axios.default)({
               method: 'GET',
-              url: 'http://127.0.0.1:5000/api/v1/users/logout'
+              url: 'http://localhost:5000/api/v1/auth/logout'
             });
 
           case 3:
             res = _context2.sent;
-            if (res.data.status = 'success') location.reload(true);
+
+            if (res.data.success === true) {
+              (0, _alerts.showAlert)('success', 'Logged out successfully!');
+              location.reload(true);
+            }
+
+            ;
             _context2.next = 11;
             break;
 
-          case 7:
-            _context2.prev = 7;
+          case 8:
+            _context2.prev = 8;
             _context2.t0 = _context2["catch"](0);
-            console.log(_context2.t0.response);
             (0, _alerts.showAlert)('error', 'Error logging out! Try again.');
 
           case 11:
@@ -8491,7 +8495,7 @@ function () {
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[0, 7]]);
+    }, _callee2, null, [[0, 8]]);
   }));
 
   return function logout() {

@@ -6,7 +6,8 @@ const {
     forgetPassword,
     resetPassword,
     updatePassword,
-    getMe
+    getMe,
+    logout
 } = require('../controllers/auth');
 
 
@@ -19,7 +20,7 @@ router
     .post(register)
 router
     .route('/me')
-    .get(protect,getMe)
+    .get(protect, getMe)
 
 router
     .route('/login')
@@ -37,4 +38,6 @@ router
     .route('/updatePassword')
     .put(protect, updatePassword)
 
+router
+    .get('/logout', logout);
 module.exports = router;
