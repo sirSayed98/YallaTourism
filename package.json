@@ -5,11 +5,15 @@
     "main": "server.js",
     "scripts": {
         "start": "node server.js",
-        "server": "nodemon server.js"
+        "server": "nodemon server.js",
+        "watch:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js",
+        "build:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js"
     },
     "author": "mohamed sayed",
     "license": "ISC",
     "dependencies": {
+        "@babel/polyfill": "^7.10.4",
+        "axios": "^0.19.2",
         "bcryptjs": "^2.4.3",
         "colors": "^1.4.0",
         "config": "^3.3.1",
@@ -33,6 +37,7 @@
     },
     "devDependencies": {
         "concurrently": "^5.2.0",
-        "nodemon": "^2.0.4"
+        "nodemon": "^2.0.4",
+        "parcel-bundler": "^1.12.3"
     }
 }
