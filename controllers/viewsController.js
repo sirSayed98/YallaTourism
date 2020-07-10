@@ -28,11 +28,16 @@ exports.getTour = asyncHandler(async (req, res, next) => {
             select: '-__v -passwordChangedAt'
         }
     );
-    const reviews = await Review.find({ tour: tour._id }).populate('user');
     if (!tour) {
-        return next(
-            new ErrorResponse(`There is no tour with that name.`, 404))
+        return  res.status(404).render('error', {
+            title: `404 page`,
+            msg: `There is no tour with that name ${req.params.slug }`
+    
+        });
+         
     };
+    const reviews = await Review.find({ tour: tour._id }).populate('user');
+   
     // 2)  Build template & Render template using data from 1)
     res.status(200).render('tour', {
         title: `${tour.name} Tour`,

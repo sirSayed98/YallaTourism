@@ -31,7 +31,7 @@ const app = express();
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 //serving static folders
-app.use(express.static(path.join(__dirname,'Public')))
+app.use(express.static(path.join(__dirname, 'Public')))
 
 
 // Global Middleware
@@ -91,10 +91,17 @@ app.use('/api/v1/reviews', reviews);
 
 // Handle 404 requests
 app.all('*', (req, res, next) => {
-    res.status(404).json({
-        success: false,
-        msg: `Cannot find this ${req.originalUrl} on server`
-    })
+    if (req.originalUrl.startsWith('/api')) {
+        res.status(404).json({
+            success: false,
+            msg: `Cannot find this ${req.originalUrl} on server`
+        })
+    }
+    res.status(404).render('error', {
+        title: `404 page`,
+        msg: `This page isn't available`
+
+    });
 });
 
 
