@@ -5,7 +5,6 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
-
 //Security
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');

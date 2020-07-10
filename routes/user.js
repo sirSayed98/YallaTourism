@@ -5,20 +5,20 @@ const {
     deleteUser,
     getUsers,
     createUser,
-    updateUser
+    updateUser,
+    uploadPhoto
 } = require('../controllers/user');
 
 const User = require('../models/User');
 const { protect, authorize } = require('../middleware/auth');
 const advancedResults = require('../middleware/advancedResults');
-
 const router = express.Router();
 
 router.use(protect); //apply on all routes
 
 router
     .route('/updateMe')
-    .put(updateMe)
+    .put(uploadPhoto, updateMe)
 
 router.use(authorize('admin'))
 
