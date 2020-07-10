@@ -6,7 +6,8 @@ const {
     getUsers,
     createUser,
     updateUser,
-    uploadPhoto
+    uploadPhoto,
+    resizeUserPhoto
 } = require('../controllers/user');
 
 const User = require('../models/User');
@@ -18,7 +19,7 @@ router.use(protect); //apply on all routes
 
 router
     .route('/updateMe')
-    .put(uploadPhoto, updateMe)
+    .put(uploadPhoto, resizeUserPhoto, updateMe)
 
 router.use(authorize('admin'))
 
