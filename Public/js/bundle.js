@@ -8477,8 +8477,11 @@ function () {
             res = _context2.sent;
 
             if (res.data.success === true) {
+              console.log('done logout');
               (0, _alerts.showAlert)('success', 'Logged out successfully!');
-              location.reload(true);
+              window.setTimeout(function () {
+                location.assign('/login');
+              }, 1000);
             }
 
             ;
@@ -8535,10 +8538,10 @@ function () {
         switch (_context.prev = _context.next) {
           case 0:
             _context.prev = 0;
-            url = type === 'password' ? 'http://127.0.0.1:3000/api/v1/users/updateMyPassword' : 'http://127.0.0.1:3000/api/v1/users/updateMe';
+            url = type === 'password' ? 'http://127.0.0.1:3000/api/v1/users/updateMyPassword' : 'http://localhost:5000/api/v1/users/updateMe';
             _context.next = 4;
             return (0, _axios.default)({
-              method: 'PATCH',
+              method: 'PUT',
               url: url,
               data: data
             });
@@ -8550,15 +8553,16 @@ function () {
               (0, _alerts.showAlert)('success', "".concat(type.toUpperCase(), " updated successfully!"));
             }
 
-            _context.next = 11;
+            _context.next = 12;
             break;
 
           case 8:
             _context.prev = 8;
             _context.t0 = _context["catch"](0);
+            console.log(_context.t0);
             (0, _alerts.showAlert)('error', _context.t0.response.data.message);
 
-          case 11:
+          case 12:
           case "end":
             return _context.stop();
         }
@@ -8932,7 +8936,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55555" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50983" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

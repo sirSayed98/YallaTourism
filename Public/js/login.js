@@ -30,8 +30,11 @@ export const logout = async () => {
       url: 'http://localhost:5000/api/v1/auth/logout'
     });
     if (res.data.success === true) {
+      console.log('done logout')
       showAlert('success', 'Logged out successfully!');
-      return res.redirect('/login')
+      window.setTimeout(() => {
+        location.assign('/login');
+      }, 1000);
     };
   } catch (err) {
     showAlert('error', 'Error logging out! Try again.');
