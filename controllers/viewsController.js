@@ -29,15 +29,15 @@ exports.getTour = asyncHandler(async (req, res, next) => {
         }
     );
     if (!tour) {
-        return  res.status(404).render('error', {
+        return res.status(404).render('error', {
             title: `404 page`,
-            msg: `There is no tour with that name ${req.params.slug }`
-    
+            msg: `There is no tour with that name ${req.params.slug}`
+
         });
-         
+
     };
     const reviews = await Review.find({ tour: tour._id }).populate('user');
-   
+
     // 2)  Build template & Render template using data from 1)
     res.status(200).render('tour', {
         title: `${tour.name} Tour`,
@@ -54,4 +54,15 @@ exports.getLoginForm = asyncHandler(async (req, res, next) => {
     res.status(200).render('login', {
         title: `Login into Your Account`
     });
+});
+
+
+//@desc       Home Profile
+//@route      /profile
+//@access     private
+exports.getProfile = asyncHandler(async (req, res, next) => {
+    res.status(200).render('account', {
+        title: 'Your account'
+    });
+
 });

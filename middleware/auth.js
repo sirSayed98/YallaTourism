@@ -18,10 +18,13 @@ exports.protect = asyncHandler(async (req, res, next) => {
   else if (req.cookies.token) {
     token = req.cookies.token
   }
+
+
   // Make sure token exists
   if (!token) {
     return next(new ErrorResponse('Not authorized to access this route', 401));
   }
+
 
   // Verify token
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -34,7 +37,8 @@ exports.protect = asyncHandler(async (req, res, next) => {
   if (currentUser.changedPasswordAfter(decoded.iat)) {
     return next(new ErrorResponse('User recently changed password! Please log in again', 401))
   }
-  req.user = await User.findById(decoded.id);
+  req.user = currentUser;
+  res.locals.user = currentUser;
   next();
 });
 
@@ -81,3 +85,42 @@ exports.isLoggedIn = async (req, res, next) => {
   }
   next();
 };
+
+// Protect routes
+exports.protectFront = asyncHandler(async (req, res, next) => {
+  let token;
+
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    // Set token from Bearer token in header
+    token = req.headers.authorization.split(' ')[1];
+    // Set token from cookie
+  }
+  else if (req.cookies.token) {
+    token = req.cookies.token
+  }
+
+
+  // Make sure token exists
+  if (!token) {
+    return res.redirect('/login')
+  }
+
+
+  // Verify token
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const currentUser = await User.findById(decoded.id);
+
+  if (!currentUser) {
+    return res.redirect('/login')
+  }
+  //  Check if user changed password after the token was issued
+  if (currentUser.changedPasswordAfter(decoded.iat)) {
+    return res.redirect('/login')
+  }
+  req.user = currentUser;
+  res.locals.user = currentUser;
+  next();
+});
