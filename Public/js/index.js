@@ -3,7 +3,7 @@ import '@babel/polyfill';
 import { displayMap } from './mapbox';
 import { login, logout } from './login';
 import { updateSettings } from './updateSettings';
-
+import { showAlert } from './alerts';
 // DOM ELEMENTS
 const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
@@ -40,16 +40,23 @@ if (userPasswordForm)
     e.preventDefault();
     document.querySelector('.btn--save-password').textContent = 'Updating...';
 
-    const passwordCurrent = document.getElementById('password-current').value;
-    const password = document.getElementById('password').value;
+    const currentPassword = document.getElementById('password-current').value;
+    const newPassword = document.getElementById('password').value;
     const passwordConfirm = document.getElementById('password-confirm').value;
-    await updateSettings(
-      { passwordCurrent, password, passwordConfirm },
-      'password'
-    );
+    if (passwordConfirm === newPassword) {
+      await updateSettings(
+        { currentPassword, newPassword },
+        'password'
+      );
+      document.querySelector('.btn--save-password').textContent = 'Save password';
+      document.getElementById('password-current').value = '';
+      document.getElementById('password').value = '';
+      document.getElementById('password-confirm').value = '';
+    }
+    else {
+      document.querySelector('.btn--save-password').textContent = 'Save password';
+      showAlert('error', ' password and confirm don\'t match');
+    }
 
-    document.querySelector('.btn--save-password').textContent = 'Save password';
-    document.getElementById('password-current').value = '';
-    document.getElementById('password').value = '';
-    document.getElementById('password-confirm').value = '';
+
   });
