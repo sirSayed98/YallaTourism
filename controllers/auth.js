@@ -1,23 +1,27 @@
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const User = require('../models/User');
-const sendEmail = require('../utils/sendEmail');
-const crypto =require('crypto')
+const crypto = require('crypto')
+const Email = require('./../utils/sendEmail');
 
 //@desc       Register User
 //@route      GET/api/v1/auth/register
 //@access     public
 exports.register = asyncHandler(async (req, res, next) => {
-    const { password, confirmPassword,role } = req.body;
+    const { password, confirmPassword, role } = req.body;
 
-    if(role==='admin')
-    return next(new ErrorResponse('Register as admin is not allowed'),400)
+    if (role === 'admin')
+        return next(new ErrorResponse('Register as admin is not allowed'), 400)
+
     if (password !== confirmPassword)
         return next(
             new ErrorResponse(`password and confirm password don't match`, 400)
         );
     //create user
     const user = await User.create(req.body);
+
+    const url = `${req.protocol}://${req.get('host')}/profile`;
+    await new Email(user, url).sendWelcome();
     sendTokenResponse(user, 200, res);
 
 })
@@ -64,7 +68,7 @@ exports.forgetPassword = asyncHandler(async (req, res, next) => {
     const resetToken = user.getResetPasswordToken();
 
     // save hashed token and expire date
-    await user.save({validateBeforeSave: false }); //to stop run validation which will ask to enter required fields
+    await user.save({ validateBeforeSave: false }); //to stop run validation which will ask to enter required fields
 
     // Create reset url
     const resetUrl = `${req.protocol}://${req.get(
@@ -74,11 +78,11 @@ exports.forgetPassword = asyncHandler(async (req, res, next) => {
     const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
 
     try {
-        await sendEmail({
-            email: user.email,
-            subject: 'Password reset token',
-            message
-        });
+        // await sendEmail({
+        //     email: user.email,
+        //     subject: 'Password reset token',
+        //     message
+        // });
 
         res.status(200).json({ success: true, data: 'Email sent' });
     } catch (err) {
@@ -86,7 +90,7 @@ exports.forgetPassword = asyncHandler(async (req, res, next) => {
         user.resetPasswordToken = undefined;
         user.resetPasswordExpire = undefined;
 
-        await user.save({validateBeforeSave: false });
+        await user.save({ validateBeforeSave: false });
 
         return next(new ErrorResponse('Email could not be sent', 500));
     }
