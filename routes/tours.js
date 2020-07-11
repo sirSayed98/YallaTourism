@@ -9,7 +9,9 @@ const {
     aliasTopTours,
     getTourStats,
     getToursInYear,
-    getTourWithin
+    getTourWithin,
+    uploadTourImages,
+    resizeTourImages
 } = require('../controllers/tours');
 
 const Tour = require('../models/Tour');
@@ -45,7 +47,7 @@ router
 router
     .route('/:id')
     .get(getTour)
-    .put(protect, authorize('admin', 'lead-guide'), updateTour)
+    .put(protect, authorize('admin', 'lead-guide'), uploadTourImages, resizeTourImages, updateTour)
     .delete(protect, authorize('admin', 'lead-guide'), deleteTour)
 
 

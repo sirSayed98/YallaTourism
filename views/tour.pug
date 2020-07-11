@@ -70,11 +70,11 @@ block content
 
   section.section-map
     #map(data-locations=`${JSON.stringify(tour.locations)}`)
-
-  section.section-reviews
-    .reviews
-      each review in reviews
-        +reviewCard(review)
+  -if(reviews.length>0)
+    section.section-reviews
+      .reviews
+        each review in reviews
+          +reviewCard(review)
 
   section.section-cta
     .cta
