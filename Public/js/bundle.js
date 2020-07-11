@@ -8862,12 +8862,11 @@ if (loginForm) loginForm.addEventListener('submit', function (e) {
 if (logOutBtn) logOutBtn.addEventListener('click', _login.logout);
 if (userDataForm) userDataForm.addEventListener('submit', function (e) {
   e.preventDefault();
-  var name = document.getElementById('name').value;
-  var email = document.getElementById('email').value;
-  (0, _updateSettings.updateSettings)({
-    name: name,
-    email: email
-  }, 'data');
+  var form = new FormData();
+  form.append('name', document.getElementById('name').value);
+  form.append('email', document.getElementById('email').value);
+  form.append('photo', document.getElementById('photo').files[0]);
+  (0, _updateSettings.updateSettings)(form, 'data');
 });
 if (userPasswordForm) userPasswordForm.addEventListener('submit',
 /*#__PURE__*/
