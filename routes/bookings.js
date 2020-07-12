@@ -1,7 +1,8 @@
 const express = require('express');
 
 const {
-    getCheckoutSession
+    getCheckoutSession,
+    getMyTours
 } = require('../controllers/booking');
 
 
@@ -11,8 +12,10 @@ const router = express.Router();
 
 
 router
-.get('/checkout-session/:tourID',protect,getCheckoutSession);
+    .get('/checkout-session/:tourID', protect, getCheckoutSession);
 
+router
+    .get('/my-tours', protect, getMyTours)
 
 
 

@@ -42,3 +42,18 @@ exports.getCheckoutSession = asyncHandler(async (req, res, next) => {
         data: session
     });
 });
+
+
+
+// @desc      Show Booked Tour
+// @route     GET /api/v1/booking/my-tours
+// @access    Public
+exports.getMyTours = asyncHandler(async (req, res, next) => {
+    const booking = await Booking.find({ user: req.user.id });
+    const tourIDs = booking.map(el => el.tour);
+    const tours = await Tour.find({ _id: { $in: tourIDs } });
+    res.status(200).render('overview', {
+        title: 'My Tours',
+        tours
+    })
+});
