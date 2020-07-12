@@ -70,21 +70,18 @@ exports.forgetPassword = asyncHandler(async (req, res, next) => {
     // save hashed token and expire date
     await user.save({ validateBeforeSave: false }); //to stop run validation which will ask to enter required fields
 
-    // Create reset url
-    const resetUrl = `${req.protocol}://${req.get(
-        'host'
-    )}/api/v1/auth/resetPassword/${resetToken}`;
 
-    const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
+
 
     try {
-        // await sendEmail({
-        //     email: user.email,
-        //     subject: 'Password reset token',
-        //     message
-        // });
+        // Create reset url
+        const resetURL = `${req.protocol}://${req.get(
+            'host'
+        )}/api/v1/auth/resetPassword/${resetToken}`;
 
-        res.status(200).json({ success: true, data: 'Email sent' });
+        await new Email(user, resetURL).sendPasswordReset();
+
+        res.status(200).json({ success: true, msg: 'Email sent' });
     } catch (err) {
         console.log(err);
         user.resetPasswordToken = undefined;
@@ -94,11 +91,7 @@ exports.forgetPassword = asyncHandler(async (req, res, next) => {
 
         return next(new ErrorResponse('Email could not be sent', 500));
     }
-
-    res.status(200).json({
-        success: true,
-        data: user
-    });
+    
 });
 
 // @desc      Reset password
