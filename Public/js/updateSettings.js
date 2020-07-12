@@ -5,11 +5,10 @@ import { showAlert } from './alerts';
 // type is either 'password' or 'data'
 export const updateSettings = async (data, type) => {
   try {
-    console.log(data);
     const url =
       type === 'password'
-        ? 'http://localhost:5000/api/v1/auth/updatePassword'
-        : 'http://localhost:5000/api/v1/users/updateMe';
+        ? '/api/v1/auth/updatePassword'
+        : '/api/v1/users/updateMe';
 
     const res = await axios({
       method: 'PUT',

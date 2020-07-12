@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
 //Security
+const compression = require('compression')
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xss = require('xss-clean');
@@ -80,7 +81,7 @@ const Limitter = rateLimit({
 });
 app.use('/api', Limitter);
 
-
+app.use(compression());
 
 // Mount routers
 app.use('/', viewRouter);
