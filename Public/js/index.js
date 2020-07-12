@@ -4,13 +4,14 @@ import { displayMap } from './mapbox';
 import { login, logout } from './login';
 import { updateSettings } from './updateSettings';
 import { showAlert } from './alerts';
+import { bookTour } from './stripe';
 // DOM ELEMENTS
 const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
-
+const bookBtn = document.getElementById('book-tour');
 // DELEGATION
 if (mapBox) {
   const locations = JSON.parse(mapBox.dataset.locations);
@@ -60,6 +61,10 @@ if (userPasswordForm)
       document.querySelector('.btn--save-password').textContent = 'Save password';
       showAlert('error', ' password and confirm don\'t match');
     }
-
-
+  });
+if (bookBtn)
+  bookBtn.addEventListener('click', e => {
+    e.target.textContent = 'Processing...';
+    const { tourId } = e.target.dataset;
+    bookTour(tourId);
   });
