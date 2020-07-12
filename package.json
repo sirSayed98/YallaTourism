@@ -44,5 +44,8 @@
         "concurrently": "^5.2.0",
         "nodemon": "^2.0.4",
         "parcel-bundler": "^1.12.3"
-    }
+    },
+    "engines": {
+        "node": "^10"
+      }
 }
