@@ -23,6 +23,7 @@ const tours = require('./routes/tours');
 const auth = require('./routes/auth');
 const users = require('./routes/user');
 const reviews = require('./routes/reviews');
+const booking = require('./routes/bookings');
 const viewRouter = require('./routes/viewsRoutes');
 
 const app = express();
@@ -87,6 +88,7 @@ app.use('/api/v1/tours', tours);
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/users', users);
 app.use('/api/v1/reviews', reviews);
+app.use('/api/v1/booking', booking);
 
 // Handle 404 requests
 app.all('*', (req, res, next) => {
