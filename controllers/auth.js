@@ -22,7 +22,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 
     const url = `${req.protocol}://${req.get('host')}/profile`;
     await new Email(user, url).sendWelcome();
-    sendTokenResponse(user, 200, res);
+    sendTokenResponse(user, 200, req, res);
 
 })
 
@@ -50,7 +50,7 @@ exports.login = asyncHandler(async (req, res, next) => {
     if (!isMatch) {
         return next(new ErrorResponse('Invalid credentials', 401));
     }
-    sendTokenResponse(user, 200, res);
+    sendTokenResponse(user, 200, req, res);
 });
 
 
@@ -91,7 +91,7 @@ exports.forgetPassword = asyncHandler(async (req, res, next) => {
 
         return next(new ErrorResponse('Email could not be sent', 500));
     }
-    
+
 });
 
 // @desc      Reset password
@@ -118,7 +118,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
     await user.save();
-    sendTokenResponse(user, 200, res);
+    sendTokenResponse(user, 200, req, res);
 });
 
 
@@ -136,7 +136,7 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
     user.password = req.body.newPassword;
     await user.save();
 
-    sendTokenResponse(user, 200, res);
+    sendTokenResponse(user, 200, req, res);
 });
 
 // @desc      Get current logged in user
@@ -151,7 +151,7 @@ exports.getMe = asyncHandler(async (req, res, next) => {
     });
 });
 // Get token from model, create cookie and send response
-const sendTokenResponse = (user, statusCode, res) => {
+const sendTokenResponse = (user, statusCode, req, res) => {
     // Create token
     const token = user.getSignedJwtToken();
 
