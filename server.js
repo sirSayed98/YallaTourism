@@ -3,6 +3,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
 //Security
@@ -26,6 +27,7 @@ const users = require('./routes/user');
 const reviews = require('./routes/reviews');
 const booking = require('./routes/bookings');
 const viewRouter = require('./routes/viewsRoutes');
+const bookingController=require('./controllers/booking');
 
 const app = express();
 app.enable('trust proxy');
@@ -37,6 +39,13 @@ app.use(express.static(path.join(__dirname, 'Public')))
 
 
 // Global Middleware
+
+// Stripe webhook, BEFORE body-parser, because stripe needs the body as stream
+app.post(
+    '/webhook-checkout',
+    bodyParser.raw({ type: 'application/json' }),
+    bookingController.webhookCheckout
+  );
 
 // Body parser
 app.use(express.json({ limit: '10kb' }));

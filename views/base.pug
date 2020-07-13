@@ -8,7 +8,7 @@ html
     link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato:300,300i,700')
     title YallaTourism | #{title}
 
-  body
+  body(data-alert=`${alert ? alert : ''}`)
     //HEADER
     include _header
 
