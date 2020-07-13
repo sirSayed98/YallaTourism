@@ -138,6 +138,18 @@ npm run watch:js
 # Run in production
 npm run build:js
 ```
+# Screenshots
+![Cap1](https://user-images.githubusercontent.com/47485363/87338763-f4e0a600-c545-11ea-8ee8-6ff9d04210f0.PNG)
+![Cap2](https://user-images.githubusercontent.com/47485363/87338777-f9a55a00-c545-11ea-9d22-4ba4bd54be89.PNG)
+![Cap3](https://user-images.githubusercontent.com/47485363/87338781-fc07b400-c545-11ea-9f52-5d4218d1e480.PNG)
+![Cap4](https://user-images.githubusercontent.com/47485363/87338794-ff02a480-c545-11ea-9560-449642267a4c.PNG)
+![Cap5](https://user-images.githubusercontent.com/47485363/87338806-032ec200-c546-11ea-8db4-efe68d89f837.PNG)
+![Cap6](https://user-images.githubusercontent.com/47485363/87338821-075adf80-c546-11ea-8e00-84de946c61db.PNG)
+![Cap7](https://user-images.githubusercontent.com/47485363/87338842-0de95700-c546-11ea-874e-405e632b17e6.PNG)
+![Cap8](https://user-images.githubusercontent.com/47485363/87338855-12157480-c546-11ea-9cba-21dc3abd5987.PNG)
+![Cap9](https://user-images.githubusercontent.com/47485363/87338877-1b064600-c546-11ea-826c-a1dfc396bab8.PNG)
+![Capt10](https://user-images.githubusercontent.com/47485363/87338887-1f326380-c546-11ea-8e58-5b9053165742.PNG)
+![Cap11](https://user-images.githubusercontent.com/47485363/87338900-2194bd80-c546-11ea-9f09-59498dce9432.PNG)
 
 
 
