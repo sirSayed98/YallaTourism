@@ -1,7 +1,8 @@
 const express = require('express');
 
 const {
-    getMyTours
+    getMyTours,
+    getCheckoutSession
 } = require('../controllers/booking');
 
 
