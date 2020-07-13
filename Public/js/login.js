@@ -13,13 +13,13 @@ export const login = async (email, password) => {
       }
     });
     if (res.data.success === true) {
-      showAlert('success', 'Logged in successfully!');
+      showAlert('success', 'Welcome 😍',7);
       window.setTimeout(() => {
         location.assign('/');
       }, 1000);
     }
   } catch (err) {
-    showAlert('error', "Invalid credentials");
+    showAlert('error', err.response.data.error);
   }
 };
 
@@ -30,7 +30,7 @@ export const logout = async () => {
       url: '/api/v1/auth/logout'
     });
     if (res.data.success === true) {
-      showAlert('success', 'Logged out successfully!');
+      showAlert('success', 'See You Soon... Goodbye 😪');
       window.setTimeout(() => {
         location.assign('/login');
       }, 1000);

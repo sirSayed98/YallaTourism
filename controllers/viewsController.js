@@ -63,6 +63,14 @@ exports.getLoginForm = asyncHandler(async (req, res, next) => {
     });
 });
 
+//@desc       Sign UP
+//@route      /Register
+//@access     Public
+exports.getRegisterForm = asyncHandler(async (req, res, next) => {
+    res.status(200).render('signUp', {
+        title: `Sign Up`
+    });
+});
 
 //@desc       Home Profile
 //@route      /profile

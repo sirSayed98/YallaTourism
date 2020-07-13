@@ -21,7 +21,9 @@ exports.register = asyncHandler(async (req, res, next) => {
     const user = await User.create(req.body);
 
     const url = `${req.protocol}://${req.get('host')}/profile`;
+
     await new Email(user, url).sendWelcome();
+
     sendTokenResponse(user, 200, req, res);
 
 })

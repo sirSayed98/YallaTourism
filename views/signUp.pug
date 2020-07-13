@@ -1,0 +1,21 @@
+extends base
+
+block content
+  main.main
+    .login-form
+      h2.heading-secondary.ma-bt-lg Join Us Now
+      form.form.form--signUp
+        .form__group
+          label.form__label(for='name') Name
+          input#name.form__input(type='name', placeholder='Mohamed Sayed', required)
+        .form__group
+          label.form__label(for='email') Email address
+          input#email.form__input(type='email', placeholder='you@example.com', required)
+        .form__group.ma-bt-md
+          label.form__label(for='password') Password
+          input#password.form__input(type='password', placeholder='••••••••', required, minlength='8')
+        .form__group.ma-bt-md
+          label.form__label(for='confirmPassword') Confirm Password
+          input#confirmPassword.form__input(type='password', placeholder='••••••••', required, minlength='8')  
+        .form__group
+          button.btn.btn--green Register
