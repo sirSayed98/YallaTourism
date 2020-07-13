@@ -159,12 +159,9 @@ const sendTokenResponse = (user, statusCode, res) => {
         expires: new Date(
             Date.now() + process.env.JWT_COOKIE_EXPIRE
         ),
-        httpOnly: true
+        httpOnly: true,
+        secure: req.secure || req.headers['x-forwarded-proto'] === 'https'
     };
-
-    if (process.env.NODE_ENV === 'production') {
-        options.secure = true;
-    }
 
     res
         .status(statusCode)

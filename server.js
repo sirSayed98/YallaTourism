@@ -28,6 +28,7 @@ const booking = require('./routes/bookings');
 const viewRouter = require('./routes/viewsRoutes');
 
 const app = express();
+app.enable('trust proxy');
 // setting up view engine
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
@@ -124,4 +125,11 @@ process.on('unhandledRejection', (err, promise) => {
     console.log(`Error: ${err.message}`.red);
     // Close server & exit process
     server.close(() => process.exit(1));
+});
+
+process.on('SIGTERM', () => {
+    console.log('👋 SIGTERM RECEIVED. Shutting down gracefully');
+    server.close(() => {
+        console.log('💥 Process terminated!');
+    });
 });
